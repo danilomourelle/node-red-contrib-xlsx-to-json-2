@@ -9,44 +9,37 @@ module.exports = function(RED){
 
         var node = this;
         node.on('input', function(msg){
-            if(!node.filepath){
-                node.filepath = msg.filepath;
-            }
-
-            if (!node.rangecell){
-                node.rangecell = msg.rangecell;
-            }
-            if(!node.columnkey){
-                node.columnkey = msg.columnkey;
-            }
-
-            if (!node.sheet){
-                node.sheet = msg.sheet;
-            }
+            const filepath = msg.filepath || node.filepath;
+            const rangecell = msg.rangecell || node.rangecell;
+            const columnkey = msg.columnkey || node.columnkey;
+            const sheet = msg.sheet || node.sheet;
+        
             const excelToJson = require('convert-excel-to-json');
             let result = {};
             let columnas;
             const defaultColumn = '{"*": "{{columnHeader}}"}';
-
-             if(node.columnkey){
-                columnas = JSON.parse(node.columnkey);
-            }else{
-                
+        
+            if (columnkey) {
+                columnas = JSON.parse(columnkey);
+            } else {
                 columnas = JSON.parse(defaultColumn);
-            } 
+            }
+        
             result = excelToJson({
-                sourceFile: node.filepath,
-                range: node.rangecell,
+                sourceFile: filepath,
+                range: rangecell,
                 columnToKey: columnas
-               // sheets: node.sheet
-            })
-            if (node.sheet){
-                msg.payload = result[node.sheet];
-            }else{
+            });
+        
+            if (sheet) {
+                msg.payload = result[sheet];
+            } else {
                 msg.payload = result;
             }
+        
             node.send(msg);
         });
+        
     }
     RED.nodes.registerType("XLSX-to-json", convertxlsx);
 }
