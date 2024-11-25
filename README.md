@@ -1,4 +1,10 @@
-# node-red-contrib-xlsx-to-json
+# node-red-contrib-xlsx-to-json-2
+This node is a fork from [node-red-contrib-xlsx-to-json](https://www.npmjs.com/package/node-red-contrib-xlsx-to-json). 
+It resolves a bug to accept diff filepaths in multiple executions.
+
+
+### Original Read me
+------------------------ 
 Castellano
 
 Nodo para convertir en JSON un archivo xlsx, pudiendo seleccionar una pestaña o un rango específico del excel.
